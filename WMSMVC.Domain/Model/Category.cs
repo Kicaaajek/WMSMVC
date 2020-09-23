@@ -5,13 +5,13 @@ using System.Threading.Tasks;
 
 namespace WMSMVC.Web.Models
 {
-    public class User
+    public class Category
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public User(int id, string name)
+        public virtual ICollection<Item> Items { get; set; }
+        public Category(string name)
         {
-            Id = id;
             Name = name;
         }
     }
