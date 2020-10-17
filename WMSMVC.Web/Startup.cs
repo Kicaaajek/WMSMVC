@@ -11,6 +11,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using WMSMVC.Infrastructure;
+using WMSMVC.Domain.Intefaces;
+using WMSMVC.Infrastructure.Repositories;
+using WMSMVC.Application;
 
 namespace WMSMVC.Web
 {
@@ -31,6 +34,8 @@ namespace WMSMVC.Web
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<Context>();
+            services.AddInfrastructure();
+            services.AddApplication();
             services.AddControllersWithViews();
             services.AddRazorPages();
         }

@@ -14,24 +14,37 @@ namespace WMSMVC.Infrastructure.Repositories
         {
             _context = context;
         }
-        public void AddCategory(string name)
+        public int AddCategory(Category category)
         {
-            _context.Categories.Add(new Category(name));
+            _context.Categories.Add(category);
             _context.SaveChanges();
+            return category.Id;
         }
-        public void RemoveCategory(string name)
+        public void RemoveCategory(int id)
         {
-            var category = _context.Categories.Find(name);
+            var category = _context.Categories.Find(id);
             if(category!=null)
             {
                 _context.Categories.Remove(category);
                 _context.SaveChanges();
             }
         }
-        public List<Category> GetCategories()
+        public IQueryable<Category> GetCategories()
         {
-            var categories = _context.Categories.ToList();
+            var categories = _context.Categories;
             return categories;
+        }
+        public Category GetCategory(int id)
+        {
+            var cat = _context.Categories.FirstOrDefault(c => c.Id == id);
+            return cat;
+        }
+
+        public void UpdateCategory(Category category)
+        {
+            _context.Attach(category);
+            _context.Entry(category).Property("Name").IsModified = true;
+            _context.SaveChanges();
         }
     }
 }

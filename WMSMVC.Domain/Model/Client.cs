@@ -9,14 +9,13 @@ namespace WMSMVC.Web.Models
     public class Client
     {
         public int Id { get; set; }
+        public string Company { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
-        public virtual ICollection<Adress> Adresses { get; set; }
-        public virtual ClientData ClientData { get; set; }
-        public Client(string name, string surname)
-        {
-            Name = name;
-            Surname = surname;
-        }
+        public string NIP { get; set; }
+        public bool IsActive { get; set; }
+        public virtual ICollection<ClientAdress> ClientAdresses { get; set; }
+        public virtual ICollection<ClientData> ClientDatas { get; set; }
+        public virtual ICollection<Basket> Baskets { get; set; }
     }
 }

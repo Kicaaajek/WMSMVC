@@ -8,12 +8,16 @@ namespace WMSMVC.Domain.Intefaces
 {
     public interface IItemRepository
     {
-        void AddItem(string name, int quantity, int categoryId);
-        public void RemoveItem(string name);
-        List<Item> GetItems();
-        //IQueryable<Item> GetItemsByCategory(string categoryName);
-        void UpdateItem(string name, int quantity);
-        List<Item> IsLow();
-        
+        int AddItem(Item item);
+        void RemoveItem(int id);
+        void UpdateItem(Item item);
+        Item GetItem(int id);
+        int GetQuantity(int id);
+        void EditPrice(int id);
+        void EditQuantity(int id);
+        IQueryable<Item> GetItems();
+        IQueryable<Item> GetItemsByCategory(int catid);
+        IQueryable<Item> IsLow();
+        Item GetItemByName(string name);
     }
 }

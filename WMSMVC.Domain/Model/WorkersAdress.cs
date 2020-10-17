@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using WMSMVC.Web.Models;
 
 namespace WMSMVC.Domain.Model
 {
-    public class Adress
+    public class WorkersAdress
     {
         public int Id { get; set; }
         public string Street { get; set; }
@@ -13,7 +12,7 @@ namespace WMSMVC.Domain.Model
         public int? NumberOfFlat { get; set; }
         public string ZipCode { get; set; }
         public string City { get; set; }
-        public int ClientId { get; set; }
-        public virtual Client Client { get; set; }
+        public int WorkerId { get; set; }
+        public virtual Worker Worker { get; set; }
     }
 }

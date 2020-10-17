@@ -14,49 +14,78 @@ namespace WMSMVC.Infrastructure.Repositories
         {
             _context = context;
         }
-        public void AddItem(string name,int quantity, int categoryId)
+        public int AddItem(Item item)
         {
-            _context.Items.Add(new Item(name, quantity, categoryId));
-            _context.SaveChanges();
+            _context.Items.Add(item);
+            var id = item.Id;
+            return id;
         }
-        public void RemoveItem(string name)
+        public void RemoveItem(int id)
         {
-            var item = _context.Items.Find(name);
-            if(item!=null)
+            var it = _context.Items.Find(id);
+            if (it != null)
             {
-                _context.Items.Remove(item);
+                _context.Items.Remove(it);
                 _context.SaveChanges();
             }
         }
-        public List<Item> GetItems()
+
+        public IQueryable<Item> GetItems()
         {
-            var items = _context.Items.ToList();
+            var items = _context.Items;
             return items;
         }
-        /*public IQueryable<Item> GetItemsByCategory(string categoryName)
-        {
-            var cat = _context.Categories.Where(c => c.Name == categoryName);
-            var id = cat.Id;
-            var items = _context.Items.Where(a => a.CategoryId == id);
-            return items;
-        }*/
 
-        public void UpdateItem(string name, int quantity)
+        public IQueryable<Item> GetItemsByCategory(int catid)
         {
-            foreach(var i in _context.Items)
-            {
-                if(i.Name==name)
-                {
-                    i.Quantity += quantity;
-                    break;
-                }
-            }
+            var items = _context.Items.Where(a => a.CategoryId == catid);
+            return items;
+        }
+
+        public IQueryable<Item> IsLow()
+        {
+            var lists = _context.Items.Where(i => i.Quantity < 5);
+            return lists;
+        }
+        public void UpdateItem(Item item)
+        {
+            _context.Attach(item);
+            _context.Entry(item).Property("Name").IsModified = true;
+            _context.Entry(item).Property("Quantity").IsModified = true;
+            _context.Entry(item).Property("Price").IsModified = true;
             _context.SaveChanges();
         }
-        public List<Item> IsLow()
+        public void EditQuantity(int id)
         {
-            var lists = _context.Items.Where(i => i.Quantity < 5).ToList();
-            return lists;
+            var item=_context.Items.FirstOrDefault(i => i.Id == id);
+            _context.Attach(item);
+            _context.Entry(item).Property("Quantity").IsModified = true;
+            _context.SaveChanges();
+        }
+        public void EditPrice(int id)
+        {
+            var item = _context.Items.FirstOrDefault(i => i.Id == id);
+            _context.Attach(item);
+            _context.Entry(item).Property("Price").IsModified = true;
+            _context.SaveChanges();
+        }
+        public Item GetItem(int id)
+        {
+            var item = _context.Items.FirstOrDefault(i => i.Id == id);
+            return item;
+        }
+
+        public int GetQuantity(int id)
+        {
+            var item = _context.Items.FirstOrDefault(i => i.Id == id);
+            var quantity = item.Quantity;
+            return quantity;
+        }
+
+        public Item GetItemByName(string name)
+        {
+            var item = _context.Items.FirstOrDefault(i => i.Name == name);
+            return item;
         }
     }
 }

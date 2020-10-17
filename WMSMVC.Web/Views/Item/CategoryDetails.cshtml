@@ -1,0 +1,74 @@
+﻿@model WMSMVC.Application.ViewModels.Category.CategoryVM
+
+@{
+    ViewData["Title"] = "CategoryDetails";
+}
+
+<h1>Category Details</h1>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ItemCount)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ItemCount)
+        </dd>
+    </dl>
+</div>
+<div class="row">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Id
+                </th>
+                <th>
+                    Name
+                </th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Items)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CategoryId)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "EditItem", new { id = item.Id }) |
+                        @Html.ActionLink("Details", "ItemDetails", new { id = item.Id }) |
+                        @Html.ActionLink("Delete", "DeleteItem", new { id = item.Id })
+                    </td>
+                </tr>
+
+            }
+        </tbody>
+    </table>
+</div>
+<div>
+    @Html.ActionLink("Add new item", "ItemCreate", new { id = Model.Items.Count+1 }) |
+    @Html.ActionLink("Edit", "EditCategory", new { id = Model.Id }) |
+    <a asp-action="Index">Back to List</a>
+</div>

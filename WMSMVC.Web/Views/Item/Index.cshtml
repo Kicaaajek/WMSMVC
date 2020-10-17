@@ -1,0 +1,41 @@
+﻿@model WMSMVC.Application.ViewModels.Category.ListCategories
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="CategoryCreate">Create New Category</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Id
+            </th>
+            <th>
+                Name
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Categories) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "EditCategory", new {  id=item.Id  }) |
+                @Html.ActionLink("Details", "CategoryDetails", new {  id=item.Id  }) |
+                @Html.ActionLink("Delete", "DeleteCategory", new {  id=item.Id  })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

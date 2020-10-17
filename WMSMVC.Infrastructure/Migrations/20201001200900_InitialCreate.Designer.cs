@@ -10,7 +10,7 @@ using WMSMVC.Infrastructure;
 namespace WMSMVC.Infrastructure.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20200923201215_InitialCreate")]
+    [Migration("20201001200900_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -221,7 +221,30 @@ namespace WMSMVC.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("WMSMVC.Domain.Model.Adress", b =>
+            modelBuilder.Entity("WMSMVC.Domain.Model.Basket", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ClientId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsRealised")
+                        .HasColumnType("bit");
+
+                    b.Property<double>("TotalPay")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClientId");
+
+                    b.ToTable("Baskets");
+                });
+
+            modelBuilder.Entity("WMSMVC.Domain.Model.ClientAdress", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -250,30 +273,7 @@ namespace WMSMVC.Infrastructure.Migrations
 
                     b.HasIndex("ClientId");
 
-                    b.ToTable("Adresses");
-                });
-
-            modelBuilder.Entity("WMSMVC.Domain.Model.Basket", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<double>("TotalPay")
-                        .HasColumnType("float");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("UserId1")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId1");
-
-                    b.ToTable("Baskets");
+                    b.ToTable("ClientAdresses");
                 });
 
             modelBuilder.Entity("WMSMVC.Domain.Model.ClientData", b =>
@@ -286,6 +286,102 @@ namespace WMSMVC.Infrastructure.Migrations
                     b.Property<int>("ClientId")
                         .HasColumnType("int");
 
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClientId");
+
+                    b.ToTable("ClientDatas");
+                });
+
+            modelBuilder.Entity("WMSMVC.Domain.Model.WorkDone", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("QuantityOfWork")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Standard")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("WorkerId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("WorkerId");
+
+                    b.ToTable("WorkDones");
+                });
+
+            modelBuilder.Entity("WMSMVC.Domain.Model.Worker", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SecondName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Surname")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Workers");
+                });
+
+            modelBuilder.Entity("WMSMVC.Domain.Model.WorkersAdress", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("City")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("NumberOfFlat")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NumberOfHome")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Street")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("WorkerId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ZipCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("WorkerId");
+
+                    b.ToTable("WorkersAdresses");
+                });
+
+            modelBuilder.Entity("WMSMVC.Domain.Model.WorkersData", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime2");
 
@@ -295,12 +391,14 @@ namespace WMSMVC.Infrastructure.Migrations
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("WorkerId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("ClientId")
-                        .IsUnique();
+                    b.HasIndex("WorkerId");
 
-                    b.ToTable("ClientDatas");
+                    b.ToTable("WorkersDatas");
                 });
 
             modelBuilder.Entity("WMSMVC.Web.Models.Category", b =>
@@ -324,6 +422,15 @@ namespace WMSMVC.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Company")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("NIP")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -351,6 +458,9 @@ namespace WMSMVC.Infrastructure.Migrations
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
@@ -415,27 +525,56 @@ namespace WMSMVC.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("WMSMVC.Domain.Model.Adress", b =>
+            modelBuilder.Entity("WMSMVC.Domain.Model.Basket", b =>
                 {
                     b.HasOne("WMSMVC.Web.Models.Client", "Client")
-                        .WithMany("Adresses")
+                        .WithMany()
                         .HasForeignKey("ClientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("WMSMVC.Domain.Model.Basket", b =>
+            modelBuilder.Entity("WMSMVC.Domain.Model.ClientAdress", b =>
                 {
-                    b.HasOne("WMSMVC.Web.Models.Client", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId1");
+                    b.HasOne("WMSMVC.Web.Models.Client", "Client")
+                        .WithMany("ClientAdresses")
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("WMSMVC.Domain.Model.ClientData", b =>
                 {
                     b.HasOne("WMSMVC.Web.Models.Client", "Client")
-                        .WithOne("ClientData")
-                        .HasForeignKey("WMSMVC.Domain.Model.ClientData", "ClientId")
+                        .WithMany("ClientDatas")
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("WMSMVC.Domain.Model.WorkDone", b =>
+                {
+                    b.HasOne("WMSMVC.Domain.Model.Worker", "Worker")
+                        .WithMany("WorkDone")
+                        .HasForeignKey("WorkerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("WMSMVC.Domain.Model.WorkersAdress", b =>
+                {
+                    b.HasOne("WMSMVC.Domain.Model.Worker", "Worker")
+                        .WithMany("WorkerAdress")
+                        .HasForeignKey("WorkerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("WMSMVC.Domain.Model.WorkersData", b =>
+                {
+                    b.HasOne("WMSMVC.Domain.Model.Worker", "Worker")
+                        .WithMany("WorkerData")
+                        .HasForeignKey("WorkerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
